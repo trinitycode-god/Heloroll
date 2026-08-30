@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arigato — Sua biblioteca de animes</title>
+<meta name="description" content="Plataforma pessoal de streaming de animes a partir da sua pasta local.">
+<meta name="theme-color" content="#0c0c0d">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===================== TELA DE BOAS-VINDAS ===================== -->
+<section id="welcome-screen" class="screen">
+  <div class="welcome-card">
+    <div class="brand">
+      <span class="brand-mark">A</span>
+      <div class="brand-name">ARIGATO<small>ありがとう</small></div>
+    </div>
+    <h1>Bem-vindo à sua biblioteca de animes</h1>
+    <p>Conecte a pasta do seu computador onde ficam os animes e o Arigato transforma tudo em uma vitrine de streaming, com capas, sinopses, continuar assistindo e player integrado — tudo rodando no seu navegador, sem servidor.</p>
+    <button id="btn-connect-folder" class="btn btn-primary btn-lg">Selecionar pasta dos meus Animes</button>
+    <p id="fs-support-warning" class="warning hidden">
+      Seu navegador não oferece suporte à File System Access API. Use Google Chrome ou Microsoft Edge no Windows/Mac/Linux para conectar uma pasta local.
+    </p>
+    <button id="btn-reconnect-folder" class="btn btn-ghost hidden">Reconectar pasta anterior</button>
+  </div>
+</section>
+
+<!-- ===================== TELA DE VARREDURA ===================== -->
+<section id="scan-screen" class="screen hidden">
+  <div class="scan-card">
+    <div class="spinner"></div>
+    <h2 id="scan-title">Lendo sua pasta de animes…</h2>
+    <p id="scan-progress">Procurando animes e episódios</p>
+  </div>
+</section>
+
+<!-- ===================== APP PRINCIPAL ===================== -->
+<div id="app" class="hidden">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">A</span>
+      <div class="brand-name">ARIGATO<small>ありがとう</small></div>
+    </div>
+
+    <nav class="main-nav">
+      <a href="#" data-view="home" class="nav-link active">
+        <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Início
+      </a>
+      <a href="#" data-view="library" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h3l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        Minha Biblioteca
+      </a>
+      <a href="#" data-view="continue" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Continuar Assistindo
+      </a>
+      <a href="#" data-view="favorites" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.3-8.1C1 10.1 1.6 6.6 4.6 5.1 7 3.9 9.6 4.8 12 7.4 14.4 4.8 17 3.9 19.4 5.1c3 1.5 3.6 5 1.9 7.8C18.7 16.65 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        Favoritos
+      </a>
+    </nav>
+
+    <div class="sidebar-section-label">Gêneros</div>
+    <nav id="genre-nav" class="genre-nav">
+      <span class="genre-nav-empty">Conecte sua pasta para ver os gêneros</span>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="#" data-view="settings" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        Configurações
+      </a>
+      <a href="#" id="btn-sidebar-disconnect" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Trocar pasta
+      </a>
+    </div>
+  </aside>
+
+  <div class="main-column">
+    <header class="topbar">
+      <button id="btn-sidebar-toggle" class="icon-btn sidebar-toggle-btn" title="Menu">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" class="icon"><path d="M21 21l-4.35-4.35M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="search-input" type="text" placeholder="Pesquisar animes, gêneros...">
+      </div>
+      <div class="topbar-right">
+        <button id="btn-refresh-library" class="btn btn-outline" title="Revarrer a pasta em busca de novos animes/episódios">
+          <svg viewBox="0 0 24 24" class="icon"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Atualizar Biblioteca
+        </button>
+        <div class="folder-badge" id="folder-badge" title="Pasta local conectada">
+          <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h3l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" fill="currentColor"/></svg>
+          <span id="folder-badge-name">Conectado</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="view-root"></main>
+  </div>
+
+</div>
+
+<!-- ===================== PLAYER DE VÍDEO ===================== -->
+<section id="player-screen" class="screen hidden">
+  <div class="player-wrap">
+    <video id="video-el" playsinline></video>
+
+    <div class="player-top-bar">
+      <button id="btn-player-back" class="icon-btn" title="Voltar">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="player-titles">
+        <div id="player-anime-title" class="player-anime-title"></div>
+        <div id="player-episode-title" class="player-episode-title"></div>
+      </div>
+      <button id="btn-episode-list-toggle" class="icon-btn" title="Lista de episódios">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="player-controls">
+      <div class="progress-row">
+        <span id="time-current">0:00</span>
+        <input id="progress-bar" type="range" min="0" max="100" value="0" step="0.1">
+        <span id="time-duration">0:00</span>
+      </div>
+      <div class="controls-row">
+        <div class="controls-left">
+          <button id="btn-prev-ep" class="icon-btn" title="Episódio anterior">
+            <svg viewBox="0 0 24 24"><path d="M19 20L9 12l10-8v16zM5 19V5" fill="currentColor"/></svg>
+          </button>
+          <button id="btn-play-pause" class="icon-btn icon-btn-lg" title="Play/Pause">
+            <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg>
+            <svg id="icon-pause" viewBox="0 0 24 24" class="hidden"><path d="M6 5h4v14H6zM14 5h4v14h-4z" fill="currentColor"/></svg>
+          </button>
+          <button id="btn-next-ep" class="icon-btn" title="Próximo episódio">
+            <svg viewBox="0 0 24 24"><path d="M5 4l10 8-10 8V4zM19 5v14" fill="currentColor"/></svg>
+          </button>
+          <div class="volume-box">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor"/></svg>
+            <input id="volume-bar" type="range" min="0" max="1" value="1" step="0.01">
+          </div>
+        </div>
+        <div class="controls-right">
+          <span id="unsupported-codec-warning" class="warning-inline hidden">Este arquivo pode não ser reproduzível diretamente pelo navegador (codec MKV/HEVC).</span>
+          <button id="btn-fullscreen" class="icon-btn" title="Tela cheia">
+            <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <aside id="player-episode-panel" class="player-episode-panel hidden">
+      <h3>Episódios</h3>
+      <div id="player-episode-list" class="player-episode-list"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================== MODAL: EDITAR INFORMAÇÕES ===================== -->
+<div id="edit-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Editar informações do anime</h3>
+      <button id="btn-edit-close" class="icon-btn" title="Fechar">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label class="field-label">Nome exibido</label>
+      <input id="edit-title" type="text" class="field-input" placeholder="Nome do anime">
+
+      <label class="field-label">Sinopse</label>
+      <textarea id="edit-synopsis" class="field-input" rows="5" placeholder="Sinopse do anime"></textarea>
+
+      <label class="field-label">Capa</label>
+      <div class="cover-edit-row">
+        <img id="edit-cover-preview" class="cover-preview" alt="Prévia da capa">
+        <div class="cover-edit-controls">
+          <input id="edit-cover-url" type="text" class="field-input" placeholder="Cole a URL de uma imagem…">
+          <span class="field-hint">ou</span>
+          <label class="btn btn-outline file-input-label">
+            Escolher imagem do computador
+            <input id="edit-cover-file" type="file" accept="image/*" class="hidden">
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button id="btn-edit-cancel" class="btn btn-ghost">Cancelar</button>
+      <button id="btn-edit-save" class="btn btn-primary">Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<template id="tpl-anime-card">
+  <article class="anime-card">
+    <div class="anime-card-cover">
+      <img loading="lazy" alt="">
+      <button class="btn-fav-toggle" title="Favoritar">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.3-8.1C1 10.1 1.6 6.6 4.6 5.1 7 3.9 9.6 4.8 12 7.4 14.4 4.8 17 3.9 19.4 5.1c3 1.5 3.6 5 1.9 7.8C18.7 16.65 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+      </button>
+      <div class="anime-card-progress"><div class="anime-card-progress-fill"></div></div>
+      <div class="anime-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg></div>
+    </div>
+    <div class="anime-card-info">
+      <h3 class="anime-card-title"></h3>
+      <p class="anime-card-meta"></p>
+    </div>
+  </article>
+</template>
+
+<script src="js/database.js"></script>
+<script src="js/filesystem.js"></script>
+<script src="js/anime-api.js"></script>
+<script src="js/library.js"></script>
+<script src="js/player.js"></script>
+<script src="js/edit-modal.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

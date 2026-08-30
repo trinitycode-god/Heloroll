@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1b1b1e"/>
+      <stop offset="100%" stop-color="#0b0b0c"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="450" fill="url(#bg)"/>
+  <circle cx="150" cy="185" r="46" fill="none" stroke="#ff5a1f" stroke-width="6"/>
+  <path d="M150 150 L172 210 L128 210 Z" fill="#ff5a1f"/>
+  <text x="150" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#a3a2a0">Capa não encontrada</text>
+</svg>
